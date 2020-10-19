@@ -11,3 +11,5 @@ Using;
 - [html-entities](https://www.npmjs.com/package/html-entities)
 - [chalk](https://www.npmjs.com/package/@discordjs/collection) (CLI version)
 - [beepbeep](https://www.npmjs.com/package/beepbeep) (CLI version)
+
+(This might be very inefficient, but I don't care because it works. I made this for myself.)
