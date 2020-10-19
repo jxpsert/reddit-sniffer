@@ -17,7 +17,7 @@ function createWindow() {
     let package = require('./package.json');
     win.webContents.on('did-finish-load', () => {
         win.setTitle(`${package.name} v${package.version} - https://github.com/${package.author}`);
-    })
+    });
 }
 
 app.whenReady().then(createWindow);

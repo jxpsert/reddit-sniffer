@@ -1,6 +1,6 @@
 const User = require('./User.js');
 const Subreddit = require('./Subreddit.js');
-class Post {
+class Submission {
     constructor(data){
         this.title = data.title;
         this.summary = data.summary;
@@ -13,4 +13,4 @@ class Post {
         this.date = data.date;
     }
 }
-module.exports = Post;
+module.exports = Submission;

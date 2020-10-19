@@ -5,7 +5,6 @@
     <title id='wintitle'>Reddit Sniffer v1.25.0 | https://www.github.com/jxpsert</title>
     <link rel="stylesheet" href="style.css">
     <script>
-        const config = require('../config.json');
         const {
             shell
         } = require('electron');
@@ -22,7 +21,7 @@
             let matched = 0;
 
             const reddit = new redditwrap({
-                refresh: 1000
+                refresh: 750
             });
             reddit.on('post', (postData) => {
                 if (!collecting) return;
@@ -30,6 +29,7 @@
                 let keyword = 0;
                 let list = document.getElementById('sidebar');
                 let titleColour;
+                let config = require('../config.json');
                 config.keywords.title.forEach(word => {
                     if (postData.title.toLowerCase().includes(word.toLowerCase())) keyword++;
                 })

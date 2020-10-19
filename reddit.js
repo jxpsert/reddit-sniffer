@@ -1,7 +1,7 @@
 const {EventEmitter} = require('events');
 const config = require('./config.json');
 const RssFeedEmitter = require('rss-feed-emitter');
-const Post = require('./src/Post.js');
+const Submission = require('./src/Submission.js');
 const Collection = require('@discordjs/collection');
 const feeder = new RssFeedEmitter();
 const Entities = require('html-entities').AllHtmlEntities;
@@ -20,7 +20,7 @@ class RedditClient extends EventEmitter {
         });
         feeder.on('newpost', data => {
             if (!data.title) return;
-            let PostData = new Post({
+            let PostData = new Submission({
                 title: data.title,
                 id: data.guid,
                 summary: parseDesc(data.description),
@@ -36,7 +36,7 @@ class RedditClient extends EventEmitter {
     }
 
     newPost(data) {
-        if (!data) return new Error("Shit hath hit the fan");
+        if (!data) return new Error("Shit has hit the fan");
         this.posts.set(data.id, data);
         return this.emit('post', data);
     }
@@ -45,6 +45,7 @@ class RedditClient extends EventEmitter {
 function parseDesc(data){
     let newstring = data.replace(/<[^>]*>?/gm, '')
     .replace(data.title, ' ')
+    .substring(0, data.indexOf("submitted by"))
     .substring(0, 197) + "...";
     newstring = entities.decode(newstring);
     return newstring;
