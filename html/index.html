@@ -15,7 +15,7 @@
     <ol id="sidebar">
         <script>
             const redditwrap = require('../reddit.js');
-            const fs = require('fs');
+            const fs = require('fs'); // Will be used later for logging
             let collecting = true;
             let collected = 0;
             let matched = 0;
@@ -82,7 +82,7 @@
         <li id="newposts">NEW POSTS</li> 
     </ol>
     <div style="margin-left: 27%">
-        <h3 id="toggleCollect" onclick="collectoggle()">Stop collecting</h3>
+        <h3 id="toggleCollect" onclick="collecttoggle()">Stop collecting</h3>
         <h5>Collecting for: <span id="timer"></span> minutes</h5>
         <h5 id="collectedMatched">Matched: 0/0</h5>
         <h1 id="currentPostTitle">Select a post</h1>
@@ -101,7 +101,7 @@
                 timerSpan.innerHTML = (timer / 60).toFixed(2);
             }, 1000)
 
-            function dothing() { // Makes the post URL clickable
+            function dothing() { // Makes the post URL clickable 
                 let theurl = document.getElementById('currentPostURL');
                 navigator.clipboard.writeText(theurl.innerHTML);
                 theurl.style.color = 'rgb(1, 104, 155)';
@@ -110,7 +110,7 @@
                 }, 500)
             }
 
-            function setPost(id) { // Getting the post data and setting it on the right side when selected
+            function setPost(id) { // Getting the post data and setting it on the right side when selected 
                 console.log(reddit.posts);
                 let postData = reddit.posts.get(id);
                 let postTitle = document.getElementById('currentPostTitle');
@@ -140,7 +140,7 @@
                 // if (postData.image.url !== "") postImage.setAttribute('src', postData.image.url); // This needs to be fixed, images are duplicate and stuff.
             }
 
-            function collectoggle() { // Toggle collecting. Pretty simple.
+            function collecttoggle() { // Toggle collecting. Pretty simple.
                 let toggle = document.getElementById('toggleCollect');
                 if (collecting) {
                     collecting = false;
