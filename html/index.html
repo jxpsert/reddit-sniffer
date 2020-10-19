@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title id='wintitle'>Reddit Sniffer v1.25.0 | https://www.github.com/jxpsert</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const config = require('../config.json');
+        const {
+            shell
+        } = require('electron');
+    </script>
+</head>
+
+<body>
+    <ol id="sidebar">
+        <script>
+            const redditwrap = require('../reddit.js');
+            const fs = require('fs');
+            let collecting = true;
+            let collected = 0;
+            let matched = 0;
+
+            const reddit = new redditwrap({
+                refresh: 1000
+            });
+            reddit.on('post', (postData) => {
+                if (!collecting) return;
+                collected++;
+                let keyword = 0;
+                let list = document.getElementById('sidebar');
+                let titleColour;
+                config.keywords.title.forEach(word => {
+                    if (postData.title.toLowerCase().includes(word.toLowerCase())) keyword++;
+                })
+                config.keywords.description.forEach(word => {
+                    if (postData.description.toLowerCase().includes(word.toLowerCase())) keyword++;
+                })
+                config.keywords.block.forEach(word => {
+                    if (postData.title.toLowerCase().includes(word.toLowerCase()) || postData
+                        .description.toLowerCase().includes(word.toLowerCase())) keyword = -100;
+                })
+                if (keyword > 0) {
+                    titleColour = 'green';
+                    matched++;
+                } else if (keyword < 0) {
+                    titleColour = 'red';
+                } else {
+                    titleColour = 'white';
+                }
+                list.innerHTML +=
+                    `<li onclick="setPost('${postData.id}')" id="${postData.id}" class="sidebaritem" style='color: ${titleColour}' id="${postData.author}">${postData.title}<br><span style="color: grey;">r/${postData.subreddit.name} from u/${postData.author.username}</span></li>`;
+                let items = document.querySelectorAll('.sidebaritem');
+                let last = items[items.length - 1]; // Get the most recent item to scroll to it
+
+                let counter = document.getElementById("collectedMatched");
+                counter.innerHTML = `Matched: ${matched}/${collected} (${Math.round(matched/collected*100)}%)`;
+
+                if (!list.matches(':hover')) {
+                    last.scrollIntoView()
+                } else {
+                    let newposts = document.getElementById("newposts");
+                    newposts.style.display = "inline-flexbox";
+                };
+
+                if (isScrolledIntoView(last)) {
+                    let newposts = document.getElementById("newposts");
+                    newposts.style.display = "none";
+                }
+
+                function isScrolledIntoView(el) {
+                    var rect = el.getBoundingClientRect();
+                    var elemTop = rect.top;
+                    var elemBottom = rect.bottom;
+
+                    var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
+                    //isVisible=elemTop < window.innerHeight && elemBottom>= 0;
+                    return isVisible;
+                }
+            });
+        </script>
+        <li id="newposts">NEW POSTS</li> 
+    </ol>
+    <div style="margin-left: 27%">
+        <h3 id="toggleCollect" onclick="collectoggle()">Stop collecting</h3>
+        <h5>Collecting for: <span id="timer"></span> minutes</h5>
+        <h5 id="collectedMatched">Matched: 0/0</h5>
+        <h1 id="currentPostTitle">Select a post</h1>
+        <h4 id="currentPostDesc">You haven't selected a post yet.</h4>
+        <img id="currentPostImage" src="" width="40%">
+        <h5 style="color: grey;">in r/<span id="currentPostSub">subreddit</span> from u/<span id="currentPostAuthor">author</span></h5>
+        <a style="color: grey;" id="currentPostURL"
+            onclick="dothing()">https://reddit.com/r/subreddit/comments/id/post_title</a>
+        <h6 style="color: grey;" id="currentPostDate">No date.</h6>
+        <script>
+            let timer = 0;
+            setInterval(() => { // The timer
+                if (!collecting) return;
+                timer++;
+                let timerSpan = document.getElementById('timer');
+                timerSpan.innerHTML = (timer / 60).toFixed(2);
+            }, 1000)
+
+            function dothing() { // Makes the post URL clickable
+                let theurl = document.getElementById('currentPostURL');
+                navigator.clipboard.writeText(theurl.innerHTML);
+                theurl.style.color = 'rgb(1, 104, 155)';
+                setTimeout(() => {
+                    theurl.style.color = 'grey';
+                }, 500)
+            }
+
+            function setPost(id) { // Getting the post data and setting it on the right side when selected
+                console.log(reddit.posts);
+                let postData = reddit.posts.get(id);
+                let postTitle = document.getElementById('currentPostTitle');
+                let postDesc = document.getElementById('currentPostDesc');
+                let postSub = document.getElementById('currentPostSub');
+                let postAuthor = document.getElementById('currentPostAuthor');
+                let postURL = document.getElementById('currentPostURL');
+                let postImage = document.getElementById('currentPostImage');
+                let postDate = document.getElementById('currentPostDate');
+
+                let formerSelected = document.querySelector('.sidebaritemsel'); // Removing the formerly selected item's class,
+                if(formerSelected){
+                    formerSelected.classList.remove('sidebaritemsel'); // turning it into a normal item again
+                    formerSelected.classList.add('sidebaritem');
+                }
+
+                let listItem = document.getElementById(id); // Keeping the list item selected
+                listItem.classList.remove('sidebaritem');
+                listItem.classList.add('sidebaritemsel');
+
+                postTitle.innerHTML = postData.title;
+                postDesc.innerHTML = postData.description || "No description.";
+                postSub.innerHTML = postData.subreddit.name;
+                postAuthor.innerHTML = postData.author.username;
+                postURL.innerHTML = postData.url;
+                postDate.innerHTML = postData.date;
+                // if (postData.image.url !== "") postImage.setAttribute('src', postData.image.url);
+            }
+
+            function collectoggle() { // Toggle collecting. Pretty simple.
+                let toggle = document.getElementById('toggleCollect');
+                if (collecting) {
+                    collecting = false;
+                    toggle.innerHTML = "Resume collecting";
+                    toggle.style.color = 'green';
+                } else {
+                    collecting = true;
+                    toggle.innerHTML = "Stop collecting";
+                    toggle.style.color = 'red';
+                }
+            }
+        </script>
+    </div>
+</body>
+
+</html>

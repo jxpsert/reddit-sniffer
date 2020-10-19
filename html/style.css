@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+html {
+    background-color: rgb(40,40,40);
+    color: white;
+    font-family: 'Ubuntu';
+    padding: 0;
+    scroll-behavior: smooth;
+}
+body {
+    padding: 0;
+}
+#sidebar {
+    list-style: none;
+    float: left;
+    position: fixed;
+    overflow-x: hidden;
+    z-index: 1;
+    height: 100%;
+    top: 0;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    left: 0;
+    background-color: rgb(28,28,28);
+    width: 25%;
+    padding-left: 0px;
+    margin-top: 0px;
+    display: flexbox;
+}
+#sidebar::-webkit-scrollbar {
+    display: none;
+}
+#sidebar .sidebaritem {
+    border: 1px rgb(10,10,10);
+    padding: 5px;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+#sidebar .sidebaritem:hover {
+    background-color: rgb(36,36,36);
+    cursor: pointer;
+}
+#newposts {
+    border-radius: 10px;
+    background-color: rgb(128,0,0);
+    position: fixed;
+    padding: 5px;
+    text-align: center;
+    width: 22%;
+    bottom: 5px;
+    display: inline-flexbox;
+}
+#newposts:hover{
+    background-color: rgb(128,0,0);
+}
+#currentPostURL:hover{
+    cursor:pointer;
+}
+#toggleCollect {
+    color: red;
+}
+#toggleCollect:hover {
+    cursor: pointer;
+}
+.sidebaritemsel {
+    border: 1px rgb(10,10,10);
+    padding: 5px;
+    background-color: rgb(38,38,38);
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}

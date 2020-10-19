@@ -1,0 +1,10 @@
+{
+    "subreddits": ["choosingbeggars"],
+    "keywords":{
+        "title": [],
+        "description" : [],
+        "block":[]
+    },
+    "log": false,
+    "alerts": true
+}
