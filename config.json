@@ -5,6 +5,7 @@
         "description" : [],
         "block":[]
     },
+    "refresh": 750,
     "log": false,
     "alerts": true
 }

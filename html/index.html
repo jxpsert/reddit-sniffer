@@ -19,9 +19,9 @@
             let collecting = true;
             let collected = 0;
             let matched = 0;
-
+            let {refresh} = require('../config.json');
             const reddit = new redditwrap({
-                refresh: 750
+                refresh: refresh
             });
             reddit.on('post', (postData) => {
                 if (!collecting) return;
