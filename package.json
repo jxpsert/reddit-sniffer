@@ -4,7 +4,7 @@
   "description": "Sniff subreddits for keywords in title and description, and block words from both.",
   "main": "index.js",
   "scripts": {
-    "test": "node cli.js",
+    "cli": "node cli.js",
     "start": "electron ."
   },
   "author": "jxpsert",
