@@ -1,5 +1,4 @@
 # reddit-sniffer
-### current: v1.25.0
 
 *Sniff subreddits for keywords in title and description, and block words from both.*
 
