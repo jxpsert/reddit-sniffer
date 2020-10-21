@@ -1,6 +1,6 @@
 {
   "name": "reddit-sniffer",
-  "version": "1.25.2",
+  "version": "1.25.3",
   "description": "Sniff subreddits for keywords in title and description, and block words from both.",
   "main": "index.js",
   "scripts": {

@@ -48,19 +48,34 @@
                 } else {
                     titleColour = 'white';
                 }
-                list.innerHTML +=
-                    `<li onclick="setPost('${postData.id}')" id="${postData.id}" class="sidebaritem" style='color: ${titleColour}' id="${postData.author}">${postData.title}<br><span style="color: grey;">r/${postData.subreddit.name} from u/${postData.author.username}</span></li>`;
-                let items = document.querySelectorAll('.sidebaritem');
+                let newItem = document.createElement('LI'); // Create new ListItem (LI)
+                let newItemText = document.createTextNode(`${postData.title}`); // Create the text inside 
+                let newItemSpan = document.createElement('span');
+                let newItemSpanText = document.createTextNode(`r/${postData.subreddit.name} from u/${postData.author.username}`);
+                newItemSpan.appendChild(newItemSpanText); // Bind text to span
+                newItem.appendChild(newItemText); // Bind text to LI
+                newItem.appendChild(document.createElement('br')); // Add a line break between title and subreddit/author
+                newItem.appendChild(newItemSpan); // Put span inside LI
+
+                newItem.classList.add('sidebaritem'); // Adding the sidebaritem class for styling
+                newItem.id = postData.id; // Setting the id for stuff
+                newItem.onclick = function() { setPost(postData.id) }; // Binding the click function to set the post
+                newItem.style.color = titleColour; // Keyword/block check
+                newItemSpan.style.color = 'grey'; // Subreddit/author is grey
+
+                list.appendChild(newItem); // Put LI in list
+
+                let items = document.querySelectorAll('.sidebaritem'); // All elements with class sidebaritem
                 let last = items[items.length - 1]; // Get the most recent item to scroll to it
 
                 let counter = document.getElementById("collectedMatched");
-                counter.innerHTML = `Matched: ${matched}/${collected} (${Math.round(matched/collected*100)}%)`;
+                counter.innerHTML = `Matched: ${matched}/${collected} (${Math.round(matched/collected*100)}%)`; // Set matched/collected
 
-                if (!list.matches(':hover')) {
-                    last.scrollIntoView()
+                if (!list.matches(':hover')) { // If the mouse is not over the list
+                    last.scrollIntoView() // Scroll to the lowest item
                 } else {
-                    let newposts = document.getElementById("newposts");
-                    newposts.style.display = "inline-flexbox";
+                    let newposts = document.getElementById("newposts"); // Working on this
+                    newposts.style.display = "inline-flexbox"; // Working on this
                 };
 
                 if (isScrolledIntoView(last)) {
